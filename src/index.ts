@@ -1,16 +1,26 @@
 import * as admin from 'firebase-admin';
 
-export function deleteCollection(db: FirebaseFirestore.Firestore, collectionPath: string, batchSize: number) {
-  let collectionRef = db.collection(collectionPath);
-  let query = collectionRef.orderBy('timestamp').limit(batchSize);
+interface IDeleteCollectionProps {
+  db: FirebaseFirestore.Firestore, collectionPath?: string, batchSize?: number, query?: FirebaseFirestore.Query
+}
+export function deleteCollection({ db, collectionPath, batchSize = 10, query }: IDeleteCollectionProps) {
+  if (!db) throw "[deleteCollection] No db provided";
+  if (!query && !collectionPath) throw "[deleteCollection] No query OR collectionPath provided";
+
+  let _query: FirebaseFirestore.Query;
+  if (query) {
+    _query = query;
+  } else if (!query && collectionPath) {
+    _query = db.collection(collectionPath).orderBy('timestamp').limit(batchSize);
+  }
 
   return new Promise((resolve, reject) => {
-    deleteQueryBatch(db, query, batchSize, resolve, reject);
+    deleteQueryBatch(db, _query, batchSize, resolve, reject);
   });
 }
 
 let counter = 0;
-export function deleteQueryBatch(
+function deleteQueryBatch(
   db: FirebaseFirestore.Firestore,
   query: FirebaseFirestore.Query,
   batchSize: number,
@@ -38,7 +48,7 @@ export function deleteQueryBatch(
       });
     }).then((numDeleted) => {
       if (numDeleted === 0) {
-        console.log(`[deleteQueryBatch] done deleting ${counter + batchSize}`)
+        console.log(`[deleteQueryBatch] done deleting ${counter}`)
         resolve();
         return;
       }
