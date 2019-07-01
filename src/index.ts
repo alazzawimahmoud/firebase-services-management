@@ -49,7 +49,7 @@ function deleteQueryBatch(
     }).then((numDeleted) => {
       if (numDeleted === 0) {
         console.log(`[deleteQueryBatch] done deleting ${counter}`)
-        resolve();
+        resolve(counter);
         return;
       }
       console.log(`[deleteQueryBatch] ${counter} deleted`)
