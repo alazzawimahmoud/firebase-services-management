@@ -11,11 +11,11 @@ export function deleteCollection({ db, collectionPath, batchSize = 10, query }: 
   if (query) {
     _query = query;
   } else if (!query && collectionPath) {
-    _query = db.collection(collectionPath).orderBy('timestamp').limit(batchSize);
+    _query = db.collection(collectionPath).orderBy('timestamp');
   }
 
   return new Promise((resolve, reject) => {
-    deleteQueryBatch(db, _query, batchSize, resolve, reject);
+    deleteQueryBatch(db, _query.limit(batchSize), batchSize, resolve, reject);
   });
 }
 
