@@ -62,4 +62,4 @@ function deleteQueryBatch(
     .catch(reject);
 }
 
-exports.getCollection = getCollection;
+export { getCollection }
