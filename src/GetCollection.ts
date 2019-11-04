@@ -39,7 +39,8 @@ function getQueryBatch(
 
     query.get()
         .then((snapshot) => {
-
+            console.log(`[getQueryBatch] snapshot.size`, snapshot.size);
+            
             // When there are no documents left, we are done
             if (snapshot.size == 0) {
                 return 0;
