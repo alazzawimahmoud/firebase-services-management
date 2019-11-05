@@ -20,14 +20,13 @@ export default function getCollection({ db, collectionPath, batchSize = 10, quer
     }
 
     return new Promise((resolve, reject) => {
-        getQueryBatch(db, _query.limit(batchSize), batchSize, resolve, reject, snapshotCallback);
+        getQueryBatch(_query.limit(batchSize), batchSize, resolve, reject, snapshotCallback);
     });
 }
 
 let loadCounter = 0;
 
 function getQueryBatch(
-    db: FirebaseFirestore.Firestore,
     query: FirebaseFirestore.Query,
     batchSize: number,
     resolve: (value?: {} | PromiseLike<{}> | undefined) => void,
@@ -62,7 +61,7 @@ function getQueryBatch(
             // Recurse on the next process tick, to avoid
             // exploding the stack.
             process.nextTick(() => {
-                getQueryBatch(db, query, batchSize, resolve, reject, snapshotCallback);
+                getQueryBatch(query.limit(batchSize), batchSize, resolve, reject, snapshotCallback);
             });
         })
         .catch(reject);
