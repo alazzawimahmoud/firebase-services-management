@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import getCollection from './GetCollection';
+import GetCollection from './GetCollection';
 interface IDeleteCollectionProps {
   db: FirebaseFirestore.Firestore, collectionPath?: string, batchSize?: number, query?: FirebaseFirestore.Query
 }
@@ -62,4 +62,4 @@ function deleteQueryBatch(
     .catch(reject);
 }
 
-export { getCollection }
+export { GetCollection }

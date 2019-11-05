@@ -9,7 +9,7 @@ export interface IGetCollectionProps {
     orderByKey?: string,
     query?: FirebaseFirestore.Query,
 }
-export class GetCollection {
+export default class GetCollection {
     loadCounter: number;
     lastCursor: FirebaseFirestore.QueryDocumentSnapshot | undefined;
 
